@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Employee Data Management</title>
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container">
+	<!-- Jumbotron -->
+	<div class="jumbotron ">
+		<h1 class="text-center warning">Employee Data Management</h1>
+		<h3 class="text-center">A Comprehensive Directory of Employee Billable Hours</h3>
+	</div>
+
+
+	<div class="row">
+		<div class="col-sm-12">				
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Current Employees</h3>
+				</div>
+				<div class="panel-body">
+					<table class="table table-striped">
+						<thead>						
+							<tr>
+								<th>Employee Name</th>
+								<th>Role</th>
+								<th>Start Date</th>
+								<th>Months Worked</th>
+								<th>Monthly Rate ($)</th>
+								<th>Total Billed ($)</th>
+							</tr>
+						</thead>
+						<tbody id="employeeRows">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Add Employee</h3>
+				</div>
+				<div class="panel-body">
+					<form>
+						<div class="form-group">
+							<label for="empNameInput">Employee Name</label>
+							<input type="text" class="form-control" id="empNameInput" placeholder="Employee Name">
+						</div>
+						<div class="form-group">
+							<label for="roleInput">Role</label>
+							<input type="text" class="form-control" id="roleInput" placeholder="Role">
+						</div>
+						<div class="form-group">
+							<label for="startDateInput">Start Date (DD/MM/YY - ex: 01/01/89)</label>
+							<input type="text" class="form-control" id="startDateInput" placeholder="Start Date (DD/MM/YY - ex: 01/01/89)">
+						</div>
+						<div class="form-group">
+							<label for="rateInput">Monthly Rate</label>
+							<input type="text" class="form-control" id="rateInput" placeholder="Monthly rate">
+						</div>
+						<button type="submit" class="btn btn-primary" id="submitEmployee">Submit</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>	
+</div>	
+
+
+<!-- Latest compiled and minified CSS & JS -->
+<script src="https://code.jquery.com/jquery.js"></script>
+
+<!-- LINK TO FIREBASE GOES HERE -->
+<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+
+<script>
+
+// ========================================== START CODING BELOW!!
+
+// Initialize Firebase
+var config = {
+	apiKey: "AIzaSyA5eYKsB8T2q6rMGdKSvac6eQsWTzsZEjE",
+	authDomain: "fir-recent-user.firebaseapp.com",
+	databaseURL: "https://fir-recent-user.firebaseio.com",
+	storageBucket: "fir-recent-user.appspot.com",
+};
+firebase.initializeApp(config);
+
+// Create a variable to reference the database
+var database = firebase.database();
+
+// Initial Values
+var name = "";
+var email = "";
+var age = 0;
+var comment = "";
+
+
+// Capture Button Click
+$("#addUser").on("click", function() {
+
+	// YOUR TASK!!!
+	// Code in the logic for storing and retrieving the most recent user.
+	// Dont forget to provide initial data to your Firebase database.
+
+	name = $('#nameinput').val().trim();
+	email = $('#emailinput').val().trim();
+	age = $('#ageinput').val().trim();
+	comment = $('#commentinput').val().trim();
+
+	database.ref().set({
+		name: name,
+		email: email,
+		age: age,
+		comment: comment
+	});
+
+	// Don't refresh the page!
+	return false;
+});
+
+//Firebase watcher + initial loader HINT: .on("value")
+database.ref().on("value", function(snapshot) {
+
+	// Log everything that's coming out of snapshot
+	console.log(snapshot.val());
+	console.log(snapshot.val().name);
+	console.log(snapshot.val().email);
+	console.log(snapshot.val().age);
+	console.log(snapshot.val().comment);
+
+	// Change the HTML to reflect
+	$("#namedisplay").html(snapshot.val().name);
+	$("#emaildisplay").html(snapshot.val().email);
+	$("#agedisplay").html(snapshot.val().age);
+	$("#commentdisplay").html(snapshot.val().comment);
+
+
+// Handle the errors
+}, function(errorObject) {
+
+	console.log("Errors handled: " + errorObject.code);
+});
+
+</script>
+
+</body>
+</html>
