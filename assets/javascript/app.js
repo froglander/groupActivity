@@ -51,3 +51,9 @@ database.ref().on("child_added", function(childSnapshot) {
 
 	console.log("Errors handled: " + errorObject.code);
 });
+
+ $( function() {
+    $( "#startDateInput" ).datepicker();
+  } );
+
+
