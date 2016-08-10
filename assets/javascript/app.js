@@ -27,11 +27,13 @@ $("#submitEmployee").on("click", function() {
 database.ref().on("child_added", function(childSnapshot) {
 
 	// Log everything that's coming out of snapshot
-	console.log(childSnapshot.val());
-	console.log(childSnapshot.val().empName);
-	console.log(childSnapshot.val().empRole);
-	console.log(childSnapshot.val().empStartDate);
-	console.log(childSnapshot.val().empRate);
+	// console.log(childSnapshot.val());
+	// console.log(childSnapshot.val().empName);
+	// console.log(childSnapshot.val().empRole);
+	// console.log(childSnapshot.val().empStartDate);
+	// console.log(childSnapshot.val().empRate);
+
+	var monthsWorked = moment().diff(childSnapshot.val().empStartDate, 'months');
 
 	var $empBody = $('#employeeRows');
 
@@ -40,7 +42,9 @@ database.ref().on("child_added", function(childSnapshot) {
 	var $empName = $('<td>').html(childSnapshot.val().empName).appendTo($empRow);
 	var $empRole = $('<td>').html(childSnapshot.val().empRole).appendTo($empRow);
 	var $empStartDate = $('<td>').html(childSnapshot.val().empStartDate).appendTo($empRow);
+	var $monthsWorked = $('<td>').html(monthsWorked).appendTo($empRow);
 	var $empRate = $('<td>').html(childSnapshot.val().empRate).appendTo($empRow);
+	var $totBilled = $('<td>').html(monthsWorked * childSnapshot.val().empRate).appendTo($empRow);
 
 		
 	$empRow.appendTo($empBody);
@@ -57,3 +61,5 @@ database.ref().on("child_added", function(childSnapshot) {
   } );
 
 
+
+console.log(moment("01012015", "MMDDYYYY").fromNow());
